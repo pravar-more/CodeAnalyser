@@ -16,10 +16,10 @@
 >
 > deactivate
 
-```
+
 >[!TIP]
 > ## Project Description
->
+> ```
 >
 >
 >    name='codeAnalyser',
@@ -53,7 +53,10 @@
 >    ],
 >    python_requires='>=3.8',
 >)
-```
+> ```
+
+
+
 <br/>
 
 ```diff
