@@ -1,7 +1,6 @@
 # CodeAnalyser
 ### Code Analysis · File Tree Structure
 
-```
 >[!TIP]
 > ## shell Commands
 >
@@ -17,6 +16,7 @@
 >
 > deactivate
 
+```
 >[!TIP]
 > ## Project Description
 >
