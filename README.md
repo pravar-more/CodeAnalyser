@@ -21,7 +21,7 @@
 >[!TIP]
 > ## Project Description
 
-```
+> ```
 
     name='codeAnalyser',
     version='0.1.0',
@@ -52,4 +52,5 @@
     ],
     python_requires='>=3.8',
 )
-```
+> ```
+>
