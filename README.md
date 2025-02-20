@@ -55,9 +55,6 @@
 >    python_requires='>=3.8',
 >)
 
-> 
-```
-```
 <br/>
 
 ```diff
