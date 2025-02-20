@@ -23,6 +23,10 @@
 >
 > python setup.py install
 >
+> cd ./codeAnalyser/streamlit_app
+>
+> streamlit run .\app.py
+>
 > deactivate
 
 
