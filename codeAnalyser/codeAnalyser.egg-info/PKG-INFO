@@ -1,0 +1,29 @@
+Metadata-Version: 2.2
+Name: codeAnalyser
+Version: 0.1.0
+Summary: A project using LangGraph(Model) FAST-API(endpoint) and Streamlit(UI)
+Home-page: 
+Author: #name
+Author-email: #email@example.com
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved ::  License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Requires-Dist: streamlit
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: requests
+Requires-Dist: fastapi
+Requires-Dist: pydantic
+Requires-Dist: typing
+Requires-Dist: langchain
+Requires-Dist: langchian_community
+Requires-Dist: langgraph
+Requires-Dist: langchain_groq
+Requires-Dist: uvicorn
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

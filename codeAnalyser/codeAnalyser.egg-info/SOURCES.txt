@@ -1,0 +1,8 @@
+setup.py
+codeAnalyser.egg-info/PKG-INFO
+codeAnalyser.egg-info/SOURCES.txt
+codeAnalyser.egg-info/dependency_links.txt
+codeAnalyser.egg-info/requires.txt
+codeAnalyser.egg-info/top_level.txt
+streamlit_app/__init__.py
+streamlit_app/app.py
