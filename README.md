@@ -18,6 +18,7 @@
 >
 > source venv/bin/activate        #for linux
 >
+> cd ./codeAnalyser/docs/
 > pip install -r requirements.txt
 >
 > python setup.py install
