@@ -33,5 +33,5 @@ setup(
         'License :: OSI Approved ::  License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.8',  # Specify the required Python version
+    python_requires='>=3.8',
 )
