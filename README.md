@@ -1,6 +1,12 @@
 # CodeAnalyser
 ### Code Analysis · File Tree Structure
 
+```diff
++ new line
+- old line
+@@ one more line @@
+```
+
 >[!TIP]
 > ## shell Commands
 >
