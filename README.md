@@ -62,10 +62,15 @@
 >)
 > ```
 
+---
+
+![GitHub language count](https://img.shields.io/github/languages/count/pravar-more/CodeAnalyser)
+![GitHub top language](https://img.shields.io/github/languages/top/pravar-more/CodeAnalyser?color=yellow)
+![Bitbucket open issues](https://img.shields.io/bitbucket/issues/pravar-more/CodeAnalyser)
+![GitHub forks](https://img.shields.io/github/forks/pravar-more/CodeAnalyser?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/pravar-more/CodeAnalyser?style=social)
 
 
-<br/>
 
-```diff
-+ new line
-```
+
+
