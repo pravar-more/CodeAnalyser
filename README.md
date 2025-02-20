@@ -2,7 +2,7 @@
 ### Code Analysis · File Tree Structure
 
 ```diff 
-+ new line
++ new line +
 - old line
 @@ one more line @@
 ```
