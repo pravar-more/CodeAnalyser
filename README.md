@@ -20,9 +20,9 @@
 
 >[!TIP]
 > ## Project Description
-
+>
 > ```
-
+>
     name='codeAnalyser',
     version='0.1.0',
     description='A project using LangGraph(Model) FAST-API(endpoint) and Streamlit(UI)',
