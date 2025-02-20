@@ -2,10 +2,9 @@
 ### Code Analysis · File Tree Structure
 
 
->[!]
->its a tip
->shell Commands
->#
+>[!TIP]
+> ## shell Commands
+>
 >python -m venv venv
 >.\venv\Scripts\activate         #for windows
 >source venv/bin/activate        #for linux
