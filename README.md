@@ -18,9 +18,14 @@
 >
 > source venv/bin/activate        #for linux
 >
+> cd ./codeAnalyser/docs/
 > pip install -r requirements.txt
 >
 > python setup.py install
+>
+> cd ./codeAnalyser/streamlit_app
+>
+> streamlit run .\app.py
 >
 > deactivate
 
