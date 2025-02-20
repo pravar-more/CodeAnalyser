@@ -1,7 +1,7 @@
 # CodeAnalyser
 ### Code Analysis · File Tree Structure
 
-
+```
 >[!TIP]
 > ## shell Commands
 >
@@ -16,7 +16,6 @@
 > python setup.py install
 >
 > deactivate
-
 
 >[!TIP]
 > ## Project Description
@@ -54,7 +53,7 @@
 >    ],
 >    python_requires='>=3.8',
 >)
-
+```
 <br/>
 
 ```diff
