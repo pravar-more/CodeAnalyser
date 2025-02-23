@@ -7,7 +7,6 @@ fastapi
 pydantic
 typing
 langchain
-langchian_community
 langgraph
 langchain_groq
 uvicorn
