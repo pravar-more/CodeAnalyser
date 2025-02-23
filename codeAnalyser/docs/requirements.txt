@@ -11,5 +11,5 @@ langchian_community
 langgraph
 langchain_groq
 uvicorn
-
+dotenv
 
