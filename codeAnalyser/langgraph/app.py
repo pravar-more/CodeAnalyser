@@ -11,7 +11,6 @@ def page1():
         initial_sidebar_state="expanded",
     )
 
-    st.header("WELCOME!")
     st.sidebar.header("REPO ANALYSIS")
     repo_url = st.sidebar.text_input("GIT REPO LINK")    
 
@@ -38,6 +37,7 @@ def page1():
 
     if st.sidebar.button("RUN"):
         if is_valid_github_url(repo_url):
+            st.header("Yahooo :)",divider=True)
             col1, col2 = st.columns([0.4, 0.6])
             container_col1 = col1.container(height=360,border=True)
             st.sidebar.success("Valid Git Link ")
@@ -62,17 +62,20 @@ def page1():
                 # container_col2_t1.write(response2["recommendations"])
                 # container_col2_t2.write(response2["recommendations"])
             else:
-                col1, col2 = st.columns([0.8, 0.2])
+                col1, col2 = st.columns([0.99, 0.01])
                 container_col1 = col1.container(height=360,border=True)
                 container_col1.write("No recommendations available.")
         else:
-            col1, col2 = st.columns([0.8, 0.2])
+            st.header("No Problem",divider=True)
+            st.write("Try Again!")
+            col1, col2 = st.columns([0.99, 0.01])
             container_col1 = col1.container(height=200,border=True)
             container_col1.subheader("OOPSies!!!!!!")
             st.sidebar.error("Please enter a valid Git repository URL.")
     else:
-        col1, col2 = st.columns([0.8, 0.2])
+        st.header("WELCOME!",divider=True)
+        col1, col2 = st.columns([0.99, 0.01])
         container_col1 = col1.container(height=200,border=True)
-        container_col1.write("Hello to Repo Analysis, Enter your git link in sidebar input box and click on RUN button to get the analysis.")
+        container_col1.write("Hello to Repo Analysis, Enter your git link in sidebar input box and click on :red[RUN] button to get the analysis.")
 
 page1()
