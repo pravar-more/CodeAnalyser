@@ -121,10 +121,11 @@ def run_agent(repo_url: str):
         if final_state and "file_tree" in final_state and "file_contents" in final_state:
             print("Final File Tree:")
             print(colorama.Fore.YELLOW + final_state["file_tree"])
+            colorama.Style.RESET_ALL
             print("Final File Contents:")
             print(final_state["file_contents"])
             print("Programming Languages Used:")
-            print(colorama.Fore.YELLOW + final_state["programming_languages"])
+            print(colorama.Fore.GREEN + final_state["programming_languages"])
             # return final_state
             status="Success"
             return final_state, status

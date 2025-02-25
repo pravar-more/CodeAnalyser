@@ -3,7 +3,7 @@ import streamlit as st
 # from codeAnalyser.langgraph.utils import clone_repo, analyze_repo  # Adjust the import path as needed
 import sys
 import re
-from langgraph.agentic_workflow import run_agentic_workflow
+from codeAnalyser.langgraph.agentic_workflow import run_agentic_workflow
 
 
 def page1():  
