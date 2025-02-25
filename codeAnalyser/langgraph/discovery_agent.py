@@ -6,6 +6,7 @@ from github import Github
 from langchain_core.messages import SystemMessage, HumanMessage
 import pygments
 from pygments.lexers import guess_lexer_for_filename, ClassNotFound
+import colorama
 
 # Load environment variables from .env file
 load_dotenv()
@@ -119,16 +120,21 @@ def run_agent(repo_url: str):
         final_state = gather_repo_content_node(initial_state)
         if final_state and "file_tree" in final_state and "file_contents" in final_state:
             print("Final File Tree:")
-            print(final_state["file_tree"])
+            print(colorama.Fore.YELLOW + final_state["file_tree"])
             print("Final File Contents:")
             print(final_state["file_contents"])
             print("Programming Languages Used:")
-            print(final_state["programming_languages"])
-            return final_state
+            print(colorama.Fore.YELLOW + final_state["programming_languages"])
+            # return final_state
+            status="Success"
+            return final_state, status
+            
+        
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")
-        return None
+        status=None
+        return status
 
 # Example usage
 # if __name__ == "__main__":

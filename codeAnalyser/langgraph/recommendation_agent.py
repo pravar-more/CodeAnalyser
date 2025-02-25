@@ -30,10 +30,22 @@ class RecommendationState(TypedDict):
     analysis_result: str
     recommendations: str
     iteration: int
+    human_input: str
+
+# --- Human Input Function ---
+def get_human_input(state: RecommendationState) -> RecommendationState:
+    """Collects human input for the recommendation agent."""
+    print("\nPlease review the repository details and provide any additional comments or instructions.")
+    human_input = input("Enter your comments or instructions: ")
+    state["human_input"] = human_input
+    return state
 
 # Define the prompt template for generating recommendations
 PROMPT_TEMPLATE = """
 You are Recommendations Agent (RA), an expert AI code analyst. Your task is to analyze the provided code and file structure for potential issues based on the following instructions and guidelines.
+
+**Human_input:**
+{human_input}
 
 **Input:**
 * **File Tree Structure:**
@@ -112,7 +124,8 @@ def generate_recommendations(state: RecommendationState):
         file_tree=state['file_tree'],
         file_contents=state['file_contents'],
         programming_languages=state['programming_languages'],
-        analysis_result=state['analysis_result']
+        analysis_result=state['analysis_result'],
+        human_input=state['human_input']
     )
     # Invoke the model with the recommendation prompt
     response = llm.invoke([{"role": "system", "content": recommendation_prompt}])
@@ -125,7 +138,8 @@ def reflect_on_recommendations(state: RecommendationState):
         file_tree=state['file_tree'],
         file_contents=state['file_contents'],
         programming_languages=state['programming_languages'],
-        analysis_result=state['analysis_result']
+        analysis_result=state['analysis_result'],
+        human_input=state['human_input']
     )
     # Invoke the model with the reflection prompt
     response = llm.invoke([{"role": "system", "content": reflection_prompt}])
@@ -140,11 +154,12 @@ def should_continue(state: RecommendationState):
 
 # Initialize the state graph
 graph_builder = StateGraph(RecommendationState)
+graph_builder.add_node("get_human_input", get_human_input)
 graph_builder.add_node("generate_recommendations", generate_recommendations)
 graph_builder.add_node("reflect_on_recommendations", reflect_on_recommendations)
 
 # Set the entry point
-graph_builder.set_entry_point("generate_recommendations")
+graph_builder.set_entry_point("get_human_input")
 
 # Add conditional edges
 graph_builder.add_conditional_edges(
@@ -153,6 +168,8 @@ graph_builder.add_conditional_edges(
     {END: END, "reflect_on_recommendations": "reflect_on_recommendations"},
 )
 
+# Add edge from get_human_input to generate_recommendations
+graph_builder.add_edge("get_human_input", "generate_recommendations")
 # Add edge from generate_recommendations to reflect_on_recommendations
 graph_builder.add_edge("generate_recommendations", "reflect_on_recommendations")
 
@@ -168,7 +185,8 @@ def run_recommendation_agent(file_tree: str, file_contents: str, programming_lan
         "programming_languages": programming_languages,
         "analysis_result": analysis_result,
         "recommendations": "",
-        "iteration": 0
+        "iteration": 0,
+        "human_input": ""
     }
     # Invoke the state graph
     final_state = graph.invoke(initial_state)

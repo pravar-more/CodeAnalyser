@@ -1,26 +1,32 @@
 # streamlit_app/app.py
 import streamlit as st
 # from codeAnalyser.langgraph.utils import clone_repo, analyze_repo  # Adjust the import path as needed
-from pages.page1 import page1  
-# Function to handle navigation
-def navigate_to(page):
-    st.session_state['page'] = page
+import sys
+import re
+from langgraph.agentic_workflow import run_agentic_workflow
 
-# Initialize session state
-if 'page' not in st.session_state:
-    st.session_state['page'] = 'home'
 
-# Navigation buttons
-st.sidebar.title("Navigation")
-st.sidebar.button("Go to Home", on_click=lambda: navigate_to('home'))
-st.sidebar.button("Go to Page 1", on_click=lambda: navigate_to('page1'))
+def page1():  
+    st.title("Git Repository Analysis")
+    repo_url = st.text_input("Enter Git Repository URL")
 
-# Display the appropriate page based on the session state
-if st.session_state['page'] == 'home':
-    st.title("Home Page")
-    st.write("Welcome to the Home Page!")
-elif st.session_state['page'] == 'page1':
-    page1()
+
+    #
+    is_valid_github_url = lambda url: re.match(r'^https://github\.com/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+(\.git)?$', url) is not None
+    if st.button("Analyze"):
+        if is_valid_github_url(repo_url):
+            st.success("Valid Git Link ")
+            st.write("Cloning and analyzing the repository...")
+        else:
+            st.error("Please enter a valid Git repository URL.")    
+
+    else:
+        st.write("Bye Bye")
+
+
+page1()
+
+
 
 
 

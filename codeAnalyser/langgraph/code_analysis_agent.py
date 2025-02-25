@@ -3,6 +3,7 @@ from typing import Annotated, TypedDict
 from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI
 from langgraph.graph import StateGraph, END
+import streamlit
 
 # Load environment variables from .env file
 load_dotenv()
@@ -29,11 +30,54 @@ class AnalysisState(TypedDict):
     programming_language: str
     analysis_result: str
     iteration: int
+    human : str
+
+import os
+from typing import Annotated, TypedDict
+from dotenv import load_dotenv
+from langchain_openai import AzureChatOpenAI
+from langgraph.graph import StateGraph, END
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Define configuration variables for the Azure OpenAI API
+endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+key = os.getenv("AZURE_OPENAI_API_KEY")
+AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
+AZURE_GPT4_DEPLOYMENT_NAME = os.getenv("AZURE_GPT4_DEPLOYMENT_NAME")
+
+# Initialize an instance of AzureChatOpenAI with the specified parameters
+llm = AzureChatOpenAI(
+    temperature=0.1,
+    model=AZURE_GPT4_DEPLOYMENT_NAME,
+    azure_endpoint=endpoint,
+    openai_api_key=key,
+    api_version=AZURE_OPENAI_API_VERSION
+)
+
+# Define a TypedDict for the analysis state
+class AnalysisState(TypedDict):
+    file_tree: str
+    file_contents: str
+    programming_language: str
+    analysis_result: str
+    iteration: int
+    human_input : str
+
+# --- Human Input Function ---
+def get_human_input(state: AnalysisState) -> AnalysisState:
+    """Collects human input for the review agent."""
+    print("\nPlease review the repository details and provide any additional comments or instructions.")
+    human_input = input("Enter your comments or instructions: ")
+    state["human_input"] = human_input
+    return state
+
 
 # Define the prompt template for code analysis
 PROMPT_TEMPLATE = """
 You are Code Analyzer Agent (CAA), an expert AI code analyst. Your task is to analyze the provided code for potential issues based on the following instructions and guidelines.
-
+{human_input}
 **Input:**
 
 *   **Code:**
@@ -119,6 +163,7 @@ def analyze_code(state: AnalysisState):
     analysis_prompt = PROMPT_TEMPLATE.format(
         code=state['file_contents'],
         language=state['programming_language'],
+        human_input=state['human_input'],
         analysis_focus="security vulnerabilities, performance bottlenecks, code style, maintainability",
         style_guide="PEP 8" if state['programming_language'] == "Python" else "",
         specific_instructions="Focus specifically on potential SQL injection vulnerabilities, check if error handling is implemented correctly, check for resource leaks"
@@ -133,6 +178,7 @@ def reflect_on_analysis(state: AnalysisState):
     reflection_prompt = PROMPT_TEMPLATE.format(
         code=state['file_contents'],
         language=state['programming_language'],
+        human_input=state['human_input'],
         analysis_focus="security vulnerabilities, performance bottlenecks, code style, maintainability",
         style_guide="PEP 8" if state['programming_language'] == "Python" else "",
         specific_instructions="Focus specifically on potential SQL injection vulnerabilities, check if error handling is implemented correctly, check for resource leaks"
@@ -150,11 +196,12 @@ def should_continue(state: AnalysisState):
 
 # Initialize the state graph
 graph_builder = StateGraph(AnalysisState)
+graph_builder.add_node("get_human_input", get_human_input)
 graph_builder.add_node("analyze_code", analyze_code)
 graph_builder.add_node("reflect_on_analysis", reflect_on_analysis)
 
 # Set the entry point
-graph_builder.set_entry_point("analyze_code")
+graph_builder.set_entry_point("get_human_input")
 
 # Add conditional edges
 graph_builder.add_conditional_edges(
@@ -163,7 +210,8 @@ graph_builder.add_conditional_edges(
     {END: END, "reflect_on_analysis": "reflect_on_analysis"},
 )
 
-# Add edge from analyze_code to reflect_on_analysis
+# Add edges
+graph_builder.add_edge("get_human_input", "analyze_code")
 graph_builder.add_edge("analyze_code", "reflect_on_analysis")
 
 # Compile the graph
@@ -177,7 +225,8 @@ def run_code_analysis_agent(file_tree: str, file_contents: str, programming_lang
         "file_contents": file_contents,
         "programming_language": programming_language,
         "analysis_result": "",
-        "iteration": 0
+        "iteration": 0,
+        "human_input": ""
     }
     # Invoke the state graph
     final_state = graph.invoke(initial_state)
