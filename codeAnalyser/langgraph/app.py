@@ -75,13 +75,14 @@ def page1():
             response1 = run_agent(repo_url) 
             if response1:
                 container_col1.code(response1["file_tree"])
+
+                container_col2_t1.code(response1["programming_languages"])
+                container_col2_t2.code(response1["file_contents"])
                 
                 # if container_col1.button("Click to view file contents"):
-                if col1.button("Click to view file contents"):
-                    container_col2_t1.write(response1["programming_languages"])
-                    container_col2_t2.write(response1["file_contents"])
-
-                #
+                # if col1.button("Click to view file contents"):
+                #     container_col2_t1.write(response1["programming_languages"])
+                #     container_col2_t2.write(response1["file_contents"])
 
                 input2 = col1.text_input("Enter your input here")  
                 
