@@ -65,18 +65,19 @@ def page1():
 
             tab1, tab2 = col2.tabs(["Iteration 1", "Iteration 2"])
             container_col2_t1 = tab1.container(height=300)
-            container_col2_t1.subheader("Iteration 1")
+            
             container_col2_t1.write(container_col2_message1,unsafe_allow_html=True)
             
             container_col2_t2 = tab2.container(height=300)
-            container_col2_t2.subheader("Iteration 2")
+
             container_col2_t2.write("Output will be displayed here after analysis.")
 
             response1 = run_agent(repo_url) 
             if response1:
                 container_col1.code(response1["file_tree"])
-
+                container_col2_t1.subheader("Programming Language")
                 container_col2_t1.code(response1["programming_languages"])
+                container_col2_t2.subheader("File Content")
                 container_col2_t2.code(response1["file_contents"])
                 
                 # if container_col1.button("Click to view file contents"):
@@ -88,6 +89,11 @@ def page1():
                 
                 if col1.button("Run Code Analysis"):
                     response2 = False   
+                    print("--------------------------")
+                    print("--------------------------")
+                    print("--------------------------")
+                    print("--------------------------")
+                    print(repo_url)
                     response2= run_agentic_workflow(repo_url)
                     if response2:
                         container_col1.write("Analysis complete. Check the results in the right pane.")
