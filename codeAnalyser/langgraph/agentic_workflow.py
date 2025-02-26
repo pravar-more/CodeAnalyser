@@ -1,7 +1,7 @@
 from langgraph.graph import StateGraph, END, START
 from discovery_agent import run_agent as run_discovery_agent
 from code_analysis_agent import run_code_analysis_agent
-from recommendation_agent import run_recommendation_agent
+from recommendation_agent import run_recommendation_agent, get_human_input
 from typing import TypedDict
 
 # Define the state machine for the agentic workflow
@@ -13,6 +13,7 @@ class AgenticWorkflowState(TypedDict):
     analysis_result: str
     recommendations: str
     iteration: int
+    human_input: str
 
 # Function to run the Discovery Agent
 def run_discovery(state: AgenticWorkflowState):
@@ -35,12 +36,19 @@ def run_discovery(state: AgenticWorkflowState):
 
 # Function to run the Code Analysis Agent
 def run_code_analysis(state: AgenticWorkflowState):
+    if not state["file_contents"]:
+        print("No code found, skipping this stage")
+        return None
     analysis_state = run_code_analysis_agent(state["file_tree"], state["file_contents"], state["programming_languages"])
     state["analysis_result"] = analysis_state["analysis_result"]
     return state
 
 # Function to run the Recommendation Agent
 def run_recommendation(state: AgenticWorkflowState):
+    if state is None:
+        print("Returning")
+        return None
+
     recommendation_state = run_recommendation_agent(state["file_tree"], state["file_contents"], state["programming_languages"], state["analysis_result"])
     state["recommendations"] = recommendation_state["recommendations"]
     return state
@@ -49,6 +57,7 @@ def run_recommendation(state: AgenticWorkflowState):
 graph_builder = StateGraph(AgenticWorkflowState)
 graph_builder.add_node("run_discovery", run_discovery)
 graph_builder.add_node("run_code_analysis", run_code_analysis)
+graph_builder.add_node("get_human_input", get_human_input)
 graph_builder.add_node("run_recommendation", run_recommendation)
 
 # Set the entry point
@@ -56,7 +65,8 @@ graph_builder.set_entry_point("run_discovery")
 
 # Add edges between nodes
 graph_builder.add_edge("run_discovery", "run_code_analysis")
-graph_builder.add_edge("run_code_analysis", "run_recommendation")
+graph_builder.add_edge("run_code_analysis", "get_human_input")
+graph_builder.add_edge("get_human_input", "run_recommendation")
 
 # Compile the graph
 graph = graph_builder.compile()
@@ -71,7 +81,8 @@ def run_agentic_workflow(repo_url: str):
         "programming_languages": "",
         "analysis_result": "",
         "recommendations": "",
-        "iteration": 0
+        "iteration": 0,
+        "human_input": ""
     }
     # Invoke the state graph
     final_state = graph.invoke(initial_state)
