@@ -65,10 +65,11 @@ def page1():
                         container_col1.write("Analysis complete. Check the results in the right pane.")
                         container_col2_t1.write(response2["recommendations"])
                         container_col2_t2.write(response2["recommendations"])
-                        
+                        st.info("Kindly provide your feedback for the next iteration.")
                         # Collect human input for iteration 2
                         st.sidebar.subheader("Human Input for Iteration 2")
-                        human_input = st.sidebar.text_area("Enter your comments or instructions for the next iteration:")
+                        human_input = st.sidebar.chat_input("Enter your comments or instructions for the next iteration:")
+                        # human_input = st.sidebar.text_area("Enter your comments or instructions for the next iteration:")
                         if st.sidebar.button("Submit Human Input"):
                             response2["human_input"] = human_input
                             response2 = run_agentic_workflow(repo_url)
