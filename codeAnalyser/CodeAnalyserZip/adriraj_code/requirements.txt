@@ -1,8 +1,0 @@
-colorama
-requests
-python-dotenv
-pygments
-langchain-openai
-langgraph
-PyGithub
-streamlit
