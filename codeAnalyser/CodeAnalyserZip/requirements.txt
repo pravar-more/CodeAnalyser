@@ -1,0 +1,14 @@
+setuptools
+streamlit
+pandas
+numpy
+requests
+fastapi
+pydantic
+typing
+langchain
+langgraph
+langchain_groq
+uvicorn
+dotenv
+

@@ -218,7 +218,7 @@ graph_builder.add_edge("analyze_code", "reflect_on_analysis")
 graph = graph_builder.compile()
 
 # Function to run the code analysis agent
-def run_code_analysis_agent(file_tree: str, file_contents: str, programming_language: str):
+def run_code_analysis_agent(file_tree: str, file_contents: str, programming_language: str, human_input: str = ""):
     # Initialize the agent's state
     initial_state = {
         "file_tree": file_tree,
@@ -226,7 +226,7 @@ def run_code_analysis_agent(file_tree: str, file_contents: str, programming_lang
         "programming_language": programming_language,
         "analysis_result": "",
         "iteration": 0,
-        "human_input": ""
+        "human_input": human_input
     }
     # Invoke the state graph
     final_state = graph.invoke(initial_state)
