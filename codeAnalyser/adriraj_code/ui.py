@@ -14,7 +14,8 @@ def create_flowchart(active_node=None):
         'fillcolor': '#E5E5E5',
         'shape': 'box',
         'fontsize': '10',
-        'margin': '0.2'
+        'fontname': 'Arial Bold',
+        'margin': '0.05'
     }
     
     active_style = {
@@ -23,12 +24,13 @@ def create_flowchart(active_node=None):
         'shape': 'box',
         'fontsize': '10',
         'penwidth': '2',
-        'margin': '0.2'
+        'fontname': 'Arial Bold',
+        'margin': '0.05'
     }
     
     # Define nodes and their labels
     nodes = {
-        'GitRepo': 'Git\nRepository',
+        'Repo': 'Repo Connect',
         'discovery': 'Discovery\nAgent',
         'analysis': 'Code Analysis\nAgent',
         'recommendation': 'Recommendation\nAgent',
@@ -42,7 +44,7 @@ def create_flowchart(active_node=None):
         flowchart.node(node_id, label, **style)
     
     # Add edges
-    flowchart.edge('GitRepo', 'discovery')
+    flowchart.edge('Repo', 'discovery')
     flowchart.edge('discovery', 'analysis')
     flowchart.edge('analysis', 'recommendation')
     flowchart.edge('recommendation', 'human')
@@ -52,8 +54,15 @@ def create_flowchart(active_node=None):
     return flowchart
 
 # Initialize Streamlit page
-st.set_page_config(layout="wide")
-
+st.set_page_config(
+    page_title="TechStack_Governance",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        
+    }
+)
 # Initialize session states
 if 'workflow_stage' not in st.session_state:
     st.session_state.workflow_stage = None
@@ -69,41 +78,30 @@ if 'repo_url' not in st.session_state:
     st.session_state.repo_url = ""
 
 # Create layout
-col1, col2, col3 = st.columns([0.01, 0.89, 0.10])
+col1, col2, col3 = st.columns([0.01, 0.84, 0.15])
 
 # Sidebar
 # Sidebar
 with st.sidebar:
-    st.title("Agentic Workflow")
+    st.title("Agenti Workflow")
     repo_url = st.text_input("Enter the GitHub repository URL:", value=st.session_state.repo_url)
     st.session_state.repo_url = repo_url
     run_workflow_button = st.button("Run Workflow")
     
     # Add user input section after run workflow button
     st.markdown("---")
-    st.subheader("Analysis Requirements")
+    st.subheader("Analysis Agent Input")
     st.session_state.human_input = st.text_area(
         "Specify analysis focus:",
         value=st.session_state.human_input,
         placeholder="Example: Focus on security aspects, code organization, performance...",
         key="human_input_area"
     )
-    submit_input_button = st.button("Submit Requirements")
+    submit_input_button = st.button("Processes Feedback ")
     
-    # Show additional feedback section after first reflection
-    if st.session_state.workflow_stage == 'reflection':
-        st.markdown("---")
-        st.subheader("Additional Feedback")
-        st.session_state.additional_input = st.text_area(
-            "Provide additional requirements:",
-            placeholder="Add more specific requirements based on initial analysis...",
-            key="additional_input_area"
-        )
-        process_feedback_button = st.button("Process Additional Feedback")
-
-
 # Main content area
-st.header("Repository Analysis")
+# if not st.session_state.workflow_stage or st.session_state.active_node == 'discovery':
+#     st.header("")
 
 # Initialize containers
 with col2:
@@ -133,6 +131,7 @@ if run_workflow_button:
         try:
             with st.spinner('Analyzing repository...'):
                 # Update to discovery phase
+                
                 st.session_state.active_node = 'discovery'
                 st.session_state.flowchart_container.graphviz_chart(
                     create_flowchart(st.session_state.active_node)
@@ -172,6 +171,7 @@ if run_workflow_button:
 # Handle feedback submission
 if submit_input_button:
     if not st.session_state.human_input:
+        st.session_state.active_node = 'recommendation'
         st.warning("Please provide feedback before submitting.")
     else:
         try:
@@ -187,10 +187,11 @@ if submit_input_button:
                     st.session_state.human_input,
                     resume=True
                 )
+                st.session_state.active_node = 'recommendation'
                 
                 if final_state:
                     # Update to final analysis phase
-                    st.session_state.active_node = 'analysis'
+                    st.session_state.active_node = 'END'
                     
                     # Display updated results
                     with st.session_state.col2_container.container():
